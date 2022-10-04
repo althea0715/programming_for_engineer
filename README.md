@@ -31,7 +31,7 @@
 
 - https://gaussian37.github.io/dl/concept/
 - MARP
-- Cython
+
 - Python Data Science Handbook : https://jakevdp.github.io/PythonDataScienceHandbook/
 - 전문가를 위한 파이썬 책 참조
-- PEP 해석 및 Python10에서 변한것들 적응
+
