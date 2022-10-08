@@ -436,3 +436,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 
 저는 개인적으로 이 라이브러리의 ok, cancel 버튼 앞글자가 대문자였으면 좋겠어서 해당 text를 임의로 수정하였습니다.
 
+## 7. Keyboard & Mouse Event 예제
+
+확인 중입니다.

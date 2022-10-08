@@ -2,8 +2,8 @@
 
 ImGui에서 ImPlot widget을 쓰면 어느정도 그래프를 그릴 수 있긴합니다만, 실제로 공학관련 Plot을 그리기엔 상당히 부족합니다. 보통 결국 Python의 matplotlib를 사용하게되는데, 이와 매우 유사한 라이브러리가 있고 이를 OpenGL 내로 구현이 가능하여 소개하고자 글을 작성합니다.
 
-Documents : https://alandefreitas.github.io/matplotplusplus/
-Github : https://github.com/alandefreitas/matplotplusplus
+- Documents : https://alandefreitas.github.io/matplotplusplus/
+- Github : https://github.com/alandefreitas/matplotplusplus
 
 ## 1. Matplot++ 설치와 CMakeLists.txt
 
@@ -60,7 +60,7 @@ include(CPack)
 
 matplot++의 core 코드 중에 line_spec.cpp에서 line 76, 392에 `custom_marker_` 변수를 정하는 코드가 있는데 `▶`이 적용되질 않아서 임의로 `>>`로 수정하였습니다.
 
-OpenGL을 backend로 사용하려면 Backend 코드를 추가해야합니다. 위에서 언급된 CMakeLists.txt 에는 추가되어있습니다. 사용상에 있어서 파일을 save 하는 형태를 취한다면 backend를 사용하면 안됩니다. 그냥 코드로 그리고 save 하는 형태를 취할 수 밖에 없습니다.
+OpenGL을 Backend로 사용하려면 Backend 코드를 추가해야합니다. 위에서 언급된 CMakeLists.txt 에는 추가되어있습니다. 사용상에 있어서 파일을 save 하는 형태를 취한다면 backend를 사용하면 안됩니다. 그냥 코드로 그리고 save 하는 형태를 취할 수 밖에 없습니다.
 
 ## 3. 실제 코드
 
