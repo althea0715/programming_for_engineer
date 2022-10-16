@@ -6,6 +6,10 @@
 ## 공부 및 작성 대기
 
 
+- matplotlib custom marker : https://petercbsmith.github.io/marker-tutorial.html
+- RBF 공부 : https://www.chadvernon.com/blog/rbf/
+
+
 - Web 부하 테스트 : [Locust](https://wookkl.tistory.com/67)
 - MVC pattern : [Stack Overflow](https://stackoverflow.com/questions/26698628/mvc-design-with-qt-designer-and-pyqt-pyside)
 - Matplotlib 코드 조각 : [Stack Overflow](https://stackoverflow.com/questions/25750170/show-decimal-places-and-scientific-notation-on-the-axis-of-a-matplotlib-plot)
