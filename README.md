@@ -5,6 +5,8 @@
 
 ## 공부 및 작성 대기
 
+- crtdbg : https://ncanis.tistory.com/m/394
+
 
 - matplotlib custom marker : https://petercbsmith.github.io/marker-tutorial.html
 - RBF 공부 : https://www.chadvernon.com/blog/rbf/
