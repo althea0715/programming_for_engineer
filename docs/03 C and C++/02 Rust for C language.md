@@ -11,6 +11,7 @@ Reference
 - https://snacky.blog/en/string-ffi-rust.html
 - https://github.com/alexcrichton/rust-ffi-examples
 - https://github.com/shepmaster/rust-ffi-omnibus
+- https://stackoverflow.com/questions/66196972/how-to-pass-a-reference-pointer-to-a-rust-struct-to-a-c-ffi-interface
 
 ## 1. Cargo.toml 설정
 
@@ -246,6 +247,121 @@ int main(int argc, char **argv) {
 
     // 반드시 배열 할당 해제
     rust_array_free(vec, len);
+
+    return 0;
+}
+```
+
+## 5. 구조체 예제 1 : struct
+
+구조체를 Pointer 없이 그냥 raw 값으로 처리하는 방법부터 작성하겠습니다.
+
+```rust
+// lib.rs
+#[repr(C)]  // 이 코드를 넣어야 C언어에 대응되는 구조체가 됩니다.
+pub struct Tuple {
+    x: f64,
+    y: f64,
+}
+
+#[no_mangle]
+pub extern "C" fn rust_tuple(tuple: Tuple) -> Tuple {
+    let mut tuple = tuple;
+    tuple.x += 1.0;
+    tuple.y += 2.0;
+
+    tuple
+}
+```
+
+당연히 사용법도 간단합니다.
+
+```cpp
+#include <stdio.h>
+
+typedef struct {
+    double x;
+    double y;
+} tuple_t;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+tuple_t rust_tuple(tuple_t);
+
+#ifdef __cplusplus
+}
+#endif
+
+int main(int argc, char **argv) {
+    tuple_t tuple;
+    tuple.x = 10;
+    tuple.y = 20;
+
+    tuple_t new_tuple = rust_tuple(tuple);
+
+    printf("%lf, %lf", new_tuple.x, new_tuple.y);
+
+    return 0;
+}
+```
+
+## 5. 구조체 예제 2 : *struct
+
+지금까지는 그 개체를 직접 Pointer로 변경하였다면, 이제는 좀 더 rust하게 Box에 넣어서 pointer를 만들었습니다. 이와같은 방식을 사용한다면, 구조체 중심의 포인터를 rust로 처리하면서 기존 rust 코드를 무리 없이 치환하여 사용할 수 있습니다.
+
+```rust
+// lib.rs
+// Reference : https://doc.rust-lang.org/std/boxed/struct.Box.html
+#[repr(C)]
+pub struct Tuple {
+    x: f64,
+    y: f64,
+}
+
+#[no_mangle]
+pub extern "C" fn rust_tuple() -> *mut Tuple {
+    let instance = Tuple { x: 0.0, y: 1.0 };
+    let ptr = Box::new(instance); // Box에 넣어서 Pointer를 만들 준비를 합니다.
+    Box::into_raw(ptr) // as_ptr + std::mem::forget을 동시에 쓰는 효과입니다.
+}
+
+#[no_mangle]
+pub extern "C" fn rust_tuple_free(instance: *mut Tuple) {
+    unsafe {
+        Box::from_raw(instance); // into_raw를 할당하는 방법입니다.
+    }
+}
+```
+
+사용법은 기존의 free 함수를 사용했던 방식과 동일합니다.
+
+```cpp
+#include <stdio.h>
+
+typedef struct {
+    double x;
+    double y;
+} tuple_t;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+tuple_t* rust_tuple();
+void rust_tuple_free(tuple_t*);
+
+#ifdef __cplusplus
+}
+#endif
+
+int main(int argc, char** argv) {
+    tuple_t* new_tuple = rust_tuple();
+
+    printf("%lf, %lf", new_tuple->x, new_tuple->y);
+
+    rust_tuple_free(new_tuple);
 
     return 0;
 }
